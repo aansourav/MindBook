@@ -1,24 +1,24 @@
-import { Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import ProfilePage from "./pages/ProfilePage";
-import RegistrationPage from "./pages/RegistrationPage";
-import NotFoundePage from "./pages/NotFoundePage";
+import {Routes, Route} from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import NotFoundPage from './pages/NotFoundPage';
+import ProfilePage from './pages/ProfilePage';
+import RegistrationPage from './pages/RegistrationPage';
 
 function App() {
-  return (
 
-    
+  return (
     <>
       <Routes>
-        <Route path='/' element={<HomePage />} exact />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/register' element={<RegistrationPage />} />
-        <Route path='/me' element={<ProfilePage />} />
-        <Route path='*' element={<NotFoundePage />} />
+        <Route element={<HomePage />} path="/" exact />
+        <Route element={<LoginPage />} path="/login" />
+        <Route element={<ProfilePage />} path="/me" />
+        <Route element={<RegistrationPage />} path="/register" />
+
+        <Route element={<NotFoundPage />} path="*" />
       </Routes>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

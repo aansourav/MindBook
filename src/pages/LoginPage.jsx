@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import AuthIllustration from "../assets/images/auth_illustration.png";
 import LoginForm from "../components/auth/LoginForm";
-
 const LoginPage = () => {
   return (
     <main className="flex min-h-screen items-center justify-center bg-deepDark py-8">
@@ -23,14 +22,13 @@ const LoginPage = () => {
               </p>
             </div>
           </div>
-
           <div className="card">
+            <LoginForm />
             <div className="py-4 lg:py-6">
-              <LoginForm />
               <p className="text-center text-xs text-gray-600/95 lg:text-sm">
-                Don’t have account?{" "}
+                Don’t have an account?
                 <Link
-                  className="text-white transition-all hover:text-lwsGreen hover:underline"
+                  className="text-white transition-all hover:text-lwsGreen hover:underline mx-2"
                   to="/register"
                 >
                   Create New
