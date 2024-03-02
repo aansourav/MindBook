@@ -1,47 +1,54 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { actions } from "../actions";
 import { useAuth } from "../hooks/useAuth";
-import useAPI from "../hooks/useAPI";
+import useAxios from "../hooks/useAxios";
+import { useProfile } from "../hooks/useProfile";
+
+import MyPosts from "../components/profile/MyPosts";
+import ProfileInfo from "../components/profile/ProfileInfo";
 
 const ProfilePage = () => {
-  const [user, setUser] = useState(null);
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const { auth } = useAuth();
-  const { api } = useAPI();
+    const { state, dispatch } = useProfile();
+    const { api } = useAxios();
+    const { auth } = useAuth();
 
-  useEffect(() => {
-    setLoading(true);
-    const fetchProfile = async () => {
-      try {
-        const response = await api.get(
-          `${import.meta.env.VITE_SERVER_BASE_URL}/profile/${auth?.user?.id}`
-        );
+    useEffect(() => {
+        dispatch({ type: actions.profile.DATA_FETCHING });
+        const fetchProfile = async () => {
+            try {
+                const response = await api.get(
+                    `${import.meta.env.VITE_SERVER_BASE_URL}/profile/${
+                        auth?.user?.id
+                    }`
+                );
+                if (response.status === 200) {
+                    dispatch({
+                        type: actions.profile.DATA_FETCHED,
+                        data: response.data,
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+                dispatch({
+                    type: actions.profile.DATA_FETCH_ERROR,
+                    error: err.message,
+                });
+            }
+        };
 
-        setUser(response?.data?.user);
-        setPosts(response?.data?.posts);
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-        console.log(error);
-      }
-    };
-    fetchProfile();
-  }, []);
+        fetchProfile();
+    }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    if (state?.loading) {
+        return <div> Fetching your Profile data...</div>;
+    }
 
-  return (
-    <>
-      <div className="text-2xl font-bold">
-        Welcome <span className="text-blue-500">{user?.firstName}</span>!
-      </div>
-      <h1>You have {posts?.length} posts</h1>
-    </>
-  );
+    return (
+        <>
+            <ProfileInfo />
+            <MyPosts />
+        </>
+    );
 };
 
 export default ProfilePage;
