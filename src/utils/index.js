@@ -1,25 +1,29 @@
-export function timeSince(date) {
-  const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-  let interval = Math.floor(seconds / 31536000);
+export const getDateDifferenceFromNow = (fromDate) => {
+    let difference = new Date().getTime() - new Date(fromDate).getTime();
 
-  if (interval > 1) {
-    return interval + " years ago";
-  }
-  interval = Math.floor(seconds / 2592000);
-  if (interval > 1) {
-    return interval + " months ago";
-  }
-  interval = Math.floor(seconds / 86400);
-  if (interval > 1) {
-    return interval + " days ago";
-  }
-  interval = Math.floor(seconds / 3600);
-  if (interval > 1) {
-    return interval + " hrs ago";
-  }
-  interval = Math.floor(seconds / 60);
-  if (interval > 1) {
-    return interval + " mins ago";
-  }
-  return Math.floor(seconds) + " secs ago";
-}
+    difference = difference / 1000;
+    let hourDifference = Math.floor(difference / 3600);
+    difference -= hourDifference * 3600;
+    let minuteDifference = Math.floor(difference / 60);
+    difference -= minuteDifference * 60;
+
+    let message;
+
+    if (hourDifference > 0) {
+        message = `${hourDifference} hour`;
+    }
+
+    if (minuteDifference > 0) {
+        message = message
+            ? `${message} ${minuteDifference} minutes`
+            : `${minuteDifference} minutes`;
+    }
+
+    if (difference) {
+        message = message
+            ? `${message} ${Math.round(difference)} seconds`
+            : `${Math.round(difference)} seconds`;
+    }
+
+    return message;
+};
